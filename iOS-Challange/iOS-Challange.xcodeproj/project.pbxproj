@@ -14,6 +14,7 @@
 		270485A02A24EE510086FF96 /* iOS_Challange.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2704859E2A24EE510086FF96 /* iOS_Challange.xcdatamodeld */; };
 		270485A22A24EE510086FF96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 270485A12A24EE510086FF96 /* Assets.xcassets */; };
 		270485A52A24EE510086FF96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 270485A32A24EE510086FF96 /* LaunchScreen.storyboard */; };
+		369FA70B4F90D53FE16704D3 /* Pods_iOS_Challange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EC93043EE9E1DE857A0C91A /* Pods_iOS_Challange.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,9 @@
 		270485A12A24EE510086FF96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		270485A42A24EE510086FF96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		270485A62A24EE510086FF96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2FBF42FFE17E877536766AD8 /* Pods-iOS-Challange.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Challange.debug.xcconfig"; path = "Target Support Files/Pods-iOS-Challange/Pods-iOS-Challange.debug.xcconfig"; sourceTree = "<group>"; };
+		8EC93043EE9E1DE857A0C91A /* Pods_iOS_Challange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Challange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFF575536F104DA0B48BB08C /* Pods-iOS-Challange.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Challange.release.xcconfig"; path = "Target Support Files/Pods-iOS-Challange/Pods-iOS-Challange.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +37,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				369FA70B4F90D53FE16704D3 /* Pods_iOS_Challange.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0371D043404B61F7E8979BD6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2FBF42FFE17E877536766AD8 /* Pods-iOS-Challange.debug.xcconfig */,
+				EFF575536F104DA0B48BB08C /* Pods-iOS-Challange.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		270485892A24EE510086FF96 = {
 			isa = PBXGroup;
 			children = (
 				270485942A24EE510086FF96 /* iOS-Challange */,
 				270485932A24EE510086FF96 /* Products */,
+				0371D043404B61F7E8979BD6 /* Pods */,
+				DECAC719866054428B805070 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +87,14 @@
 			path = "iOS-Challange";
 			sourceTree = "<group>";
 		};
+		DECAC719866054428B805070 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8EC93043EE9E1DE857A0C91A /* Pods_iOS_Challange.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,9 +102,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 270485A92A24EE510086FF96 /* Build configuration list for PBXNativeTarget "iOS-Challange" */;
 			buildPhases = (
+				BAC7D46F6B13E124D265F370 /* [CP] Check Pods Manifest.lock */,
 				2704858E2A24EE510086FF96 /* Sources */,
 				2704858F2A24EE510086FF96 /* Frameworks */,
 				270485902A24EE510086FF96 /* Resources */,
+				70C1A278786E9CB8E6D1E2C4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -135,6 +162,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		70C1A278786E9CB8E6D1E2C4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOS-Challange/Pods-iOS-Challange-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOS-Challange/Pods-iOS-Challange-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS-Challange/Pods-iOS-Challange-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAC7D46F6B13E124D265F370 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iOS-Challange-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2704858E2A24EE510086FF96 /* Sources */ = {
@@ -286,6 +355,7 @@
 		};
 		270485AA2A24EE510086FF96 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FBF42FFE17E877536766AD8 /* Pods-iOS-Challange.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -314,6 +384,7 @@
 		};
 		270485AB2A24EE510086FF96 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EFF575536F104DA0B48BB08C /* Pods-iOS-Challange.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

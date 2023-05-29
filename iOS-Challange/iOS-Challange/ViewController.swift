@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Carbon
 
 class ViewController: UIViewController {
 
@@ -14,6 +15,10 @@ class ViewController: UIViewController {
     // Do any additional setup after loading the view.
   }
 
+
+}
+
+struct Label: Component {
 
 }
 
