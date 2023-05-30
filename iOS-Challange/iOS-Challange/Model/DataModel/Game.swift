@@ -8,15 +8,15 @@
 import Foundation
 
 struct Game: Codable {
-    let id: Int
-    let name: String
+  let id: Int
+  let name: String
   let genres: [Genre]
-    let backgroundImage: String?
+  let backgroundImage: String?
     
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-      case genres
-        case backgroundImage = "background_image"
-    }
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case genres
+    case backgroundImage = "background_image"
+  }
 }

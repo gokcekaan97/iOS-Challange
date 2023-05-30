@@ -9,16 +9,18 @@ import Foundation
 
 class GamesViewModel{
   var games = [Game]()
+  var count: Int?
   let gamesUseCase = GamesUseCase()
   init(){
     getGames()
   }
   
   func getGames() {
-    gamesUseCase.getGames { result in
+    gamesUseCase.getGamesInfo { result in
       switch result {
       case .success(let games):
         self.games.append(contentsOf: games.results)
+        self.count = games.count
         print(games.results)
       case .failure(let error):
         print(error)
@@ -27,10 +29,11 @@ class GamesViewModel{
   }
 }
 protocol GamesUseCaseType {
-  func getGames (completion: @escaping (Result<GamesResponse,Error>) -> Void)
+  func getGamesInfo (completion: @escaping (Result<GamesResponse,Error>) -> Void)
+  
 }
 struct GamesUseCase : GamesUseCaseType {
-  func getGames(completion: @escaping (Result<GamesResponse,Error>) -> Void ) {
+  func getGamesInfo(completion: @escaping (Result<GamesResponse,Error>) -> Void ) {
     ApiService.shared.execute(.gamesApiRequest,
                               expecting: GamesResponse.self){ result in
       switch result{
