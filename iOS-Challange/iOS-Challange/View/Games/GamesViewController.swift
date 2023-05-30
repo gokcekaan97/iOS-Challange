@@ -6,19 +6,12 @@
 //
 
 import UIKit
-import Carbon
 
-class ViewController: UIViewController {
-
+class GamesViewController: UIViewController {
+  let viewModel = GamesViewModel()
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
+    title = "Games"
   }
-
-
-}
-
-struct Label: Component {
-
 }
 

@@ -5,7 +5,11 @@ target 'iOS-Challange' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 pod 'Carbon'
+pod 'SnapKit'
 pod 'SwiftLint'
+pod 'Alamofire'
+pod 'RealmSwift'
+pod 'Kingfisher'
   # Pods for iOS-Challange
 
 end
