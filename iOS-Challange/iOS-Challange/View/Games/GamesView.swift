@@ -10,34 +10,55 @@ import UIKit
 import Carbon
 import SnapKit
 
+class GamesView: UIView {
+  let lblTitle: UILabel = {
+      let v = UILabel()
+      v.backgroundColor = .systemGreen
+      v.textColor = .white
+      v.textAlignment = .center
+      v.layer.cornerRadius = 5
+      v.layer.masksToBounds = true
+      return v
+  }()
 
-class GamesView: UIView, Component {
-    private let label = UILabel()
-    init(_ name: String) {
-        super.init(frame: .zero)
-        setupUI()
-        configure(with: name)
+    
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.setupUI()
     }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+    func setupUI() {
+      self.addSubview(lblTitle)
+      lblTitle.snp.makeConstraints { (make) in
+          make.top.left.equalTo(2)
+          make.right.bottom.equalTo(-2)
+      }
     }
-    private func setupUI() {
-        addSubview(label)
-        label.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview() // Ekranın ortasında hizalama
-        }
+}
+struct GameItem: IdentifiableComponent {
+  func referenceSize(in bounds: CGRect) -> CGSize? {
+    return CGSize(width: bounds.width, height: 100)
+  }
+  
+  func shouldContentUpdate(with next: GameItem) -> Bool {
+    return true
+  }
+  
+    var title: String
+    var id: String {
+        title
     }
-    private func configure(with name: String) {
-        label.text = "Hellooo, \(name)!"
-        label.textColor = .black
-    }
-    func render(in content: GamesView) {
-        // Burada herhangi bir işlem yapmanıza gerek yok
-    }
-    func referenceSize(in bounds: CGRect) -> CGSize? {
-        return bounds.size // Etiketin boyutunu belirtmek için ekran boyutunu kullanıyoruz
-    }
+
     func renderContent() -> GamesView {
-        return self
+      return GamesView()
+    }
+
+    func render(in content: GamesView) {
+      content.lblTitle.text = title
     }
 }

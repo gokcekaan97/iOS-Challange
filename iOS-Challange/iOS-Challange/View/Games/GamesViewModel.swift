@@ -6,42 +6,39 @@
 //
 
 import Foundation
+import Carbon
+import Combine
 
-class GamesViewModel{
-  var games = [Game]()
+class GamesViewModel: ObservableObject{
+  var cancellable = Set<AnyCancellable>()
+  @Published var shouldPush: Bool = false
+  var gamesList = [Game]()
   var count: Int?
   let gamesUseCase = GamesUseCase()
+  var gameSection: Section?
   init(){
     getGames()
   }
-  
   func getGames() {
-    gamesUseCase.getGamesInfo { result in
-      switch result {
-      case .success(let games):
-        self.games.append(contentsOf: games.results)
-        self.count = games.count
-        print(games.results)
+    gamesUseCase.getGamesInfo().sink { completion in
+      switch completion{
       case .failure(let error):
         print(error)
+      case .finished:
+        self.shouldPush = true
       }
+    } receiveValue: { GamesResponse in
+      self.gamesList.append(contentsOf: GamesResponse.results)
+      self.gameSection = self.makeGameSection()
+    }.store(in: &cancellable)
+  }
+  func makeGameSection() -> Section {
+    var section = Section(id: "Games")
+    for item in gamesList{
+      let cell = CellNode(GameItem(title: item.name))
+      section.cells.append(cell)
     }
+    return section
   }
 }
-protocol GamesUseCaseType {
-  func getGamesInfo (completion: @escaping (Result<GamesResponse,Error>) -> Void)
-  
-}
-struct GamesUseCase : GamesUseCaseType {
-  func getGamesInfo(completion: @escaping (Result<GamesResponse,Error>) -> Void ) {
-    ApiService.shared.execute(.gamesApiRequest,
-                              expecting: GamesResponse.self){ result in
-      switch result{
-      case .success(let games):
-        completion(.success(games))
-      case .failure(let error):
-        completion(.failure(error))
-      }
-    }
-  }
-}
+

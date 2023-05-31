@@ -7,12 +7,12 @@
 
 import Foundation
 import Alamofire
-import RealmSwift
+import Combine
 
 
 final class ApiService {
   static let shared = ApiService()
-  let realm = try! Realm()
+//  let realm = try! Realm()
   private init() {
     
   }
@@ -22,20 +22,27 @@ final class ApiService {
     case decodeError
   }
   public func execute<T: Codable>(_ request: ApiRequest,
-                                  expecting type: T.Type,
-                                  completion: @escaping (Result<T,Error>) -> Void ){
-    guard let url = request.url else { return completion(.failure(ApiServiceError.urlNil)) }
-    AF.request(url, method:.get).responseDecodable(of: type.self){response in
-      switch response.result {
-      case.failure(_):
-        completion(.failure(ApiServiceError.noData))
-      case.success(let data):
-        completion(.success(data))
-      }
-    }
+                                  expecting type: T.Type) -> AnyPublisher<T,AFError>{
+    let url = request.url
+    return AF.request(url!, method:.get)
+      .validate()
+      .publishDecodable(type: T.self)
+      .value()
+      .receive(on: DispatchQueue.main)
+      .eraseToAnyPublisher()
   }
 }
-
+protocol GamesUseCaseType {
+  func getGamesInfo() -> AnyPublisher<GamesResponse,AFError>
+  
+}
+struct GamesUseCase : GamesUseCaseType {
+  func getGamesInfo() -> AnyPublisher<GamesResponse,AFError>{
+    let call = ApiService.shared.execute(.gamesApiRequest,
+                              expecting: GamesResponse.self)
+    return call
+  }
+}
 enum ApiEndpoint: String {
   case games = "/games"
 }

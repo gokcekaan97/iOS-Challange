@@ -18,7 +18,8 @@
 		27358A712A2501AA0023A6ED /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27358A702A2501AA0023A6ED /* GamesViewModel.swift */; };
 		27358A742A2503150023A6ED /* GamesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27358A732A2503150023A6ED /* GamesResponse.swift */; };
 		27358A782A25069D0023A6ED /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27358A772A25069D0023A6ED /* Game.swift */; };
-		279CDD452A277C9900D0358C /* SpacingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279CDD442A277C9900D0358C /* SpacingComponent.swift */; };
+		279CDD4F2A27988A00D0358C /* GamesTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279CDD4E2A27988A00D0358C /* GamesTabBar.swift */; };
+		279CDD532A27BCAF00D0358C /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279CDD522A27BCAF00D0358C /* SplashViewController.swift */; };
 		27F35A5B2A25FBE20008ECE6 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F35A5A2A25FBE20008ECE6 /* Genre.swift */; };
 		27F35A622A263C4A0008ECE6 /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F35A612A263C4A0008ECE6 /* GamesView.swift */; };
 		369FA70B4F90D53FE16704D3 /* Pods_iOS_Challange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EC93043EE9E1DE857A0C91A /* Pods_iOS_Challange.framework */; };
@@ -38,7 +39,8 @@
 		27358A702A2501AA0023A6ED /* GamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewModel.swift; sourceTree = "<group>"; };
 		27358A732A2503150023A6ED /* GamesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesResponse.swift; sourceTree = "<group>"; };
 		27358A772A25069D0023A6ED /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
-		279CDD442A277C9900D0358C /* SpacingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacingComponent.swift; sourceTree = "<group>"; };
+		279CDD4E2A27988A00D0358C /* GamesTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTabBar.swift; sourceTree = "<group>"; };
+		279CDD522A27BCAF00D0358C /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		27F35A5A2A25FBE20008ECE6 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		27F35A612A263C4A0008ECE6 /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
 		2FBF42FFE17E877536766AD8 /* Pods-iOS-Challange.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Challange.debug.xcconfig"; path = "Target Support Files/Pods-iOS-Challange/Pods-iOS-Challange.debug.xcconfig"; sourceTree = "<group>"; };
@@ -88,7 +90,6 @@
 		270485942A24EE510086FF96 /* iOS-Challange */ = {
 			isa = PBXGroup;
 			children = (
-				279CDD432A277C8400D0358C /* UIComponents */,
 				27F35A5C2A2612540008ECE6 /* Resource */,
 				27358A722A2503030023A6ED /* Model */,
 				27358A6E2A2501820023A6ED /* View */,
@@ -112,6 +113,8 @@
 		27358A6E2A2501820023A6ED /* View */ = {
 			isa = PBXGroup;
 			children = (
+				279CDD4E2A27988A00D0358C /* GamesTabBar.swift */,
+				279CDD522A27BCAF00D0358C /* SplashViewController.swift */,
 				27358A6F2A25018F0023A6ED /* Games */,
 			);
 			path = View;
@@ -151,14 +154,6 @@
 				27F35A5A2A25FBE20008ECE6 /* Genre.swift */,
 			);
 			path = DataModel;
-			sourceTree = "<group>";
-		};
-		279CDD432A277C8400D0358C /* UIComponents */ = {
-			isa = PBXGroup;
-			children = (
-				279CDD442A277C9900D0358C /* SpacingComponent.swift */,
-			);
-			path = UIComponents;
 			sourceTree = "<group>";
 		};
 		27F35A5C2A2612540008ECE6 /* Resource */ = {
@@ -294,11 +289,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				2704859A2A24EE510086FF96 /* GamesViewController.swift in Sources */,
+				279CDD4F2A27988A00D0358C /* GamesTabBar.swift in Sources */,
 				27358A782A25069D0023A6ED /* Game.swift in Sources */,
 				27358A6B2A24FE360023A6ED /* ApiService.swift in Sources */,
 				27358A742A2503150023A6ED /* GamesResponse.swift in Sources */,
 				27358A6D2A25005F0023A6ED /* ApiRequest.swift in Sources */,
-				279CDD452A277C9900D0358C /* SpacingComponent.swift in Sources */,
+				279CDD532A27BCAF00D0358C /* SplashViewController.swift in Sources */,
 				27F35A622A263C4A0008ECE6 /* GamesView.swift in Sources */,
 				27358A712A2501AA0023A6ED /* GamesViewModel.swift in Sources */,
 				270485962A24EE510086FF96 /* AppDelegate.swift in Sources */,
