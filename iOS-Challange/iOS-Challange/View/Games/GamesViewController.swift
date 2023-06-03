@@ -78,6 +78,8 @@ class GamesViewController: UIViewController {
       }))
       section.cells.append(cell)
     }
+    let activityIndicator = CellNode(ActivityComponent(title: "", animating: true))
+    section.cells.append(activityIndicator)
     return section
   }
 }

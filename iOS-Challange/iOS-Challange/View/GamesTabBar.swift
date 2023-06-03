@@ -14,7 +14,6 @@ class GamesTabBar: UITabBarController {
   }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    // Create Tab one
     configureUIAppearance()
     guard let tabOne = GamesViewBuilder().build() else {return}
     let tabOneBarItem = UITabBarItem(
@@ -24,7 +23,6 @@ class GamesTabBar: UITabBarController {
     )
     tabOne.tabBarItem = tabOneBarItem
     let gameView = UINavigationController(rootViewController: tabOne)
-    // Create Tab two
     guard let tabTwo = GamesViewBuilder().build() else {return}
     let tabTwoBarItem2 = UITabBarItem(
       title: "Favorites",
