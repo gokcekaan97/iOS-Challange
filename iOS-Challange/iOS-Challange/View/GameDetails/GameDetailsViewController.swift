@@ -70,7 +70,11 @@ class GameDetailsViewController: UIViewController {
     let cell = CellNode(GameDetail(title: gameName,
                                    description: gameDescription,
                                    image: tempImageURL))
+    let redditCell = CellNode(GameDetailVisit(title: "reddit"))
+    let websiteCell = CellNode(GameDetailVisit(title: "website"))
     section.cells.append(cell)
+    section.cells.append(redditCell)
+    section.cells.append(websiteCell)
     return section
   }
 }

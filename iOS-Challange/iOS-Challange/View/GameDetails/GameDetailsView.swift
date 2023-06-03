@@ -28,9 +28,10 @@ class GameDetailsView: UIView {
   }()
   let gameDescription: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 10)
+    label.font = UIFont.systemFont(ofSize: 10, weight: .light)
     label.textAlignment = .left
     label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   override init(frame: CGRect) {
@@ -43,6 +44,7 @@ class GameDetailsView: UIView {
   }
 
   func setupUI() {
+    self.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(gameImage)
     self.addSubview(gameDescription)
     self.addSubview(gameDescriptionTitle)
@@ -65,23 +67,24 @@ class GameDetailsView: UIView {
       make.left.equalToSuperview().offset(16)
       make.right.equalToSuperview().inset(16)
       make.top.equalTo(gameDescriptionTitle.snp.bottom).offset(8)
+      make.bottom.equalToSuperview().inset(16)
     }
   }
 }
 struct GameDetail: IdentifiableComponent {
-  func referenceSize(in bounds: CGRect) -> CGSize? {
-    return CGSize(width: bounds.size.width , height: bounds.size.height)
-  }
-  
-  func shouldContentUpdate(with next: GameDetail) -> Bool {
-    return true
-  }
-  
   var title: String
   var description: String
   var image: URL?
   var id: String {
     title
+  }
+  
+  func referenceSize(in bounds: CGRect) -> CGSize? {
+    return CGSize(width: bounds.width, height: UITableView.automaticDimension)
+  }
+  
+  func shouldContentUpdate(with next: GameDetail) -> Bool {
+    return true
   }
 
   func renderContent() -> GameDetailsView {
@@ -95,3 +98,53 @@ struct GameDetail: IdentifiableComponent {
     content.gameImage.kf.setImage(with: image)
   }
 }
+class GameDetailsVisitView: UIView {
+  let gameVisitLabel: UILabel = {
+    let label = UILabel()
+    label.font = UIFont.systemFont(ofSize: 17)
+    label.textAlignment = .left
+    return label
+  }()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.setupUI()
+    }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  func setupUI() {
+    self.translatesAutoresizingMaskIntoConstraints = false
+    self.addSubview(gameVisitLabel)
+    gameVisitLabel.snp.makeConstraints { (make) in
+      make.top.left.equalToSuperview().offset(16)
+      make.right.bottom.equalToSuperview().inset(16)
+      make.height.equalTo(22)
+    }
+  }
+}
+struct GameDetailVisit: IdentifiableComponent {
+  var title: String
+  var id: String {
+    title
+  }
+  
+  func referenceSize(in bounds: CGRect) -> CGSize? {
+    return CGSize(width: bounds.width, height: 54)
+  }
+  
+  func shouldContentUpdate(with next: GameDetailVisit) -> Bool {
+    return true
+  }
+
+  func renderContent() -> GameDetailsVisitView {
+    return GameDetailsVisitView()
+  }
+
+  func render(in content: GameDetailsVisitView) {
+    content.gameVisitLabel.text = "Visit \(title)"
+  }
+}
+
+
