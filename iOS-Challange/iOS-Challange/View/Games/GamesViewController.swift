@@ -40,7 +40,6 @@ class GamesViewController: UIViewController {
   )
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "Games"
     renderer.target = tableView
     viewModel.$shouldPush
       .sink { [weak self] shouldPush in
@@ -54,12 +53,20 @@ class GamesViewController: UIViewController {
   }
 
   private func setupUI() {
+    title = "Games"
+    setSearchBar()
     view.addSubview(tableView)
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
     let gameSection = makeGameSection()
     render(section: gameSection)
+  }
+  func setSearchBar(){
+    let searchController = UISearchController()
+    searchController.obscuresBackgroundDuringPresentation = false // The default is true.
+    navigationItem.searchController = searchController
+    navigationItem.hidesSearchBarWhenScrolling = false // Make the search
   }
   func makeGameSection() -> Section {
     var section = Section(id: "Games")
