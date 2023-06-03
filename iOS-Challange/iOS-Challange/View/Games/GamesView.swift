@@ -40,6 +40,8 @@ class GamesView: UIView {
     label.numberOfLines = 0
     return label
   }()
+  var onSelect: (() -> Void)?
+  let tap = UITapGestureRecognizer()
   override init(frame: CGRect) {
     super.init(frame: frame)
     self.setupUI()
@@ -49,7 +51,13 @@ class GamesView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  @objc func handleSelect() {
+      onSelect?()
+  }
   func setupUI() {
+    tap.addTarget(self, action: #selector(handleSelect))
+    self.addGestureRecognizer(tap)
+    self.isUserInteractionEnabled = true
     self.addSubview(gameImage)
     self.addSubview(gameMeta)
     self.addSubview(gameGenre)
@@ -80,6 +88,7 @@ class GamesView: UIView {
       make.left.equalTo(gameImage.snp.right).offset(16)
       make.top.equalTo(gameMeta.snp.bottom).offset(8)
       make.top.equalTo(gameMetaScore.snp.bottom).offset(8)
+      make.right.equalToSuperview().offset(-16)
     }
   }
 }
@@ -96,6 +105,7 @@ struct GameItem: IdentifiableComponent {
   var metaScore: String
   var genre: [Genre]
   var image: URL?
+  var onSelect: () -> Void
   var id: String {
     title
   }
@@ -110,6 +120,7 @@ struct GameItem: IdentifiableComponent {
     content.gameMetaScore.text = metaScore
     content.gameGenre.text = genreToString(array: genre)
     content.gameImage.kf.setImage(with: image)
+    content.onSelect = onSelect
   }
   func genreToString(array:[Genre]) -> String{
     let string = array.map { genre in

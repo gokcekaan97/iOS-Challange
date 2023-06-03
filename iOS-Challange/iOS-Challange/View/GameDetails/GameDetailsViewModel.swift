@@ -1,33 +1,32 @@
 //
-//  GamesViewModel.swift
+//  GameDetailViewModel.swift
 //  iOS-Challange
 //
-//  Created by kaan gokcek on 29.05.2023.
+//  Created by kaan gokcek on 3.06.2023.
 //
 
 import Foundation
 import Combine
 
-class GamesViewModel: ObservableObject{
+class GameDetailsViewModel: ObservableObject{
   var cancellable = Set<AnyCancellable>()
   @Published var shouldPush: Bool = false
-  var gamesList = [Games]()
+  var gameDetails: GameDetails?
   var count: Int?
   let gamesUseCase = GamesUseCase()
-  init(){
-    getGames()
+  init(gameId:Int){
+    getGame(gameId: gameId)
   }
-  func getGames() {
-    gamesUseCase.getGamesInfo().sink { completion in
+  func getGame(gameId:Int) {
+    gamesUseCase.getGameDetail(gameId: gameId).sink { completion in
       switch completion{
       case .failure(let error):
         print(error)
       case .finished:
         self.shouldPush = true
       }
-    } receiveValue: { GamesResponse in
-      self.gamesList.append(contentsOf: GamesResponse.results)
+    } receiveValue: { GameDetails in
+      self.gameDetails = GameDetails
     }.store(in: &cancellable)
   }
 }
-

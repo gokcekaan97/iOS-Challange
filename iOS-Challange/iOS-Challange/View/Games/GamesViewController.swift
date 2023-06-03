@@ -52,13 +52,33 @@ class GamesViewController: UIViewController {
   func render(section: Section) {
     renderer.render(section)
   }
+
   private func setupUI() {
     view.addSubview(tableView)
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
-    guard let gameSection = viewModel.gameSection else {return}
+    let gameSection = makeGameSection()
     render(section: gameSection)
+  }
+  func makeGameSection() -> Section {
+    var section = Section(id: "Games")
+    for item in viewModel.gamesList{
+      guard let urlString = item.backgroundImage else {return Section(id: "")}
+      let tempImageURL = URL(string: urlString)
+      guard let metaScore = item.metacritic else {return Section(id: "")}
+      let metaScoreString = String(describing: metaScore)
+      let cell = CellNode(GameItem(title: item.name,
+                                   metaScore: metaScoreString,
+                                   genre: item.genres,
+                                   image: tempImageURL,
+                                   onSelect: {
+        GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
+                                   gameId: item.id).pushCoordinator(animated: true, completion: nil)
+      }))
+      section.cells.append(cell)
+    }
+    return section
   }
 }
 

@@ -34,16 +34,24 @@ final class ApiService {
 }
 protocol GamesUseCaseType {
   func getGamesInfo() -> AnyPublisher<GamesResponse,AFError>
+  func getGameDetail(gameId:Int) -> AnyPublisher<GameDetails,AFError>
   
 }
 struct GamesUseCase : GamesUseCaseType {
   func getGamesInfo() -> AnyPublisher<GamesResponse,AFError>{
     let call = ApiService.shared.execute(.gamesApiRequest,
-                              expecting: GamesResponse.self)
+                                         expecting: GamesResponse.self)
+    return call
+  }
+  func getGameDetail(gameId:Int) -> AnyPublisher<GameDetails,AFError>{
+    let detailRequest = ApiRequest(endpoint: .gameDetail, gameId: gameId)
+    let call = ApiService.shared.execute(detailRequest,
+                                         expecting: GameDetails.self)
     return call
   }
 }
 enum ApiEndpoint: String {
   case games = "/games"
+  case gameDetail = "/games/"
 }
 

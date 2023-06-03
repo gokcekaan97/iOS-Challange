@@ -15,10 +15,14 @@ final class ApiRequest {
   private let apiKey = "?key=3be8af6ebf124ffe81d90f514e59856c"
   static let gamesApiRequest = ApiRequest(endpoint: .games)
   private let queryParameters: [URLQueryItem]
+  private let gameId:Int?
   private var urlString: String{
     var string = Constants.baseUrl
     string += endpoint.rawValue
-    string += apiKey
+    if gameId != 0 {
+      guard let id = gameId else {return ""}
+      string += "\(id)"
+    }
     if !queryParameters.isEmpty{
       let parameters = queryParameters.compactMap({
         guard let value = $0.value else { return nil }
@@ -26,12 +30,14 @@ final class ApiRequest {
       }).joined(separator: "&")
     string += parameters
     }
+    string += apiKey
     return string
   }
   public var url: URL?{
     return URL(string: urlString)
   }
-  public init(endpoint: ApiEndpoint, queryParameters: [URLQueryItem] = []) {
+  public init(endpoint: ApiEndpoint, gameId: Int = 0, queryParameters: [URLQueryItem] = []) {
+    self.gameId = gameId
     self.endpoint = endpoint
     self.queryParameters = queryParameters
   }
