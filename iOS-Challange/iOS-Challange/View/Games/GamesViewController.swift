@@ -40,19 +40,18 @@ class GamesViewController: UIViewController {
   )
   override func viewDidLoad() {
     super.viewDidLoad()
+    title = "Games"
     renderer.target = tableView
     viewModel.$shouldPush
       .sink { [weak self] shouldPush in
           if shouldPush {
             self?.setupUI()
-            print("asd")
           }
       }.store(in: &cancellable)
   }
   func render(section: Section) {
     renderer.render(section)
   }
-
   private func setupUI() {
     view.addSubview(tableView)
     tableView.snp.makeConstraints { make in

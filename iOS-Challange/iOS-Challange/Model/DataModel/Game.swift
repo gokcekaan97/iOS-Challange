@@ -12,11 +12,13 @@ struct Game: Codable {
   let name: String
   let genres: [Genre]
   let backgroundImage: String?
+  let metacritic : Int?
     
   enum CodingKeys: String, CodingKey {
     case id
     case name
     case genres
     case backgroundImage = "background_image"
+    case metacritic
   }
 }

@@ -15,6 +15,7 @@ class GamesTabBar: UITabBarController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     // Create Tab one
+    configureUIAppearance()
     guard let tabOne = GamesViewBuilder().build() else {return}
     let tabOneBarItem = UITabBarItem(
       title: "Games",
@@ -31,6 +32,18 @@ class GamesTabBar: UITabBarController {
       tag: 1
     )
     tabTwo.tabBarItem = tabTwoBarItem2
-    self.viewControllers = [gameView, tabTwo]
+    let favoriteView = UINavigationController(rootViewController: tabTwo)
+    self.viewControllers = [gameView, favoriteView]
+  }
+  func configureUIAppearance() {
+    let appearance = UINavigationBar.appearance()
+    let titleTextAttributes: [NSAttributedString.Key: Any] = [
+      .foregroundColor: UIColor.label
+    ]
+    appearance.tintColor = .label
+    appearance.prefersLargeTitles = true
+    appearance.isTranslucent = true
+    appearance.titleTextAttributes = titleTextAttributes
+    appearance.largeTitleTextAttributes = titleTextAttributes
   }
 }

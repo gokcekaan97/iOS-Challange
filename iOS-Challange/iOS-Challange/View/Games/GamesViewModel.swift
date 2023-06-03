@@ -8,6 +8,7 @@
 import Foundation
 import Carbon
 import Combine
+import Kingfisher
 
 class GamesViewModel: ObservableObject{
   var cancellable = Set<AnyCancellable>()
@@ -16,6 +17,7 @@ class GamesViewModel: ObservableObject{
   var count: Int?
   let gamesUseCase = GamesUseCase()
   var gameSection: Section?
+  var gameImage: UIImage?
   init(){
     getGames()
   }
@@ -35,7 +37,14 @@ class GamesViewModel: ObservableObject{
   func makeGameSection() -> Section {
     var section = Section(id: "Games")
     for item in gamesList{
-      let cell = CellNode(GameItem(title: item.name))
+      guard let urlString = item.backgroundImage else {return Section(id:"")}
+      let tempImageURL = URL(string: urlString)
+      guard let metaScore = item.metacritic else {return Section(id: "")}
+      let metaScoreString = String(describing: metaScore)
+      let cell = CellNode(GameItem(title: item.name,
+                                   metaScore: metaScoreString,
+                                   genre: item.genres,
+                                   image: tempImageURL))
       section.cells.append(cell)
     }
     return section
