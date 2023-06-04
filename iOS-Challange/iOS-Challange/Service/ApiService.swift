@@ -12,7 +12,6 @@ import Combine
 
 final class ApiService {
   static let shared = ApiService()
-//  let realm = try! Realm()
   private init() {
     
   }
@@ -34,6 +33,7 @@ final class ApiService {
 }
 protocol GamesUseCaseType {
   func getGamesInfo() -> AnyPublisher<GamesResponse,AFError>
+  func getMoreGamesInfo(pageInt: Int) -> AnyPublisher<GamesResponse,AFError>
   func getGameDetail(gameId:Int) -> AnyPublisher<GameDetails,AFError>
   
 }
@@ -49,6 +49,15 @@ struct GamesUseCase : GamesUseCaseType {
                                          expecting: GameDetails.self)
     return call
   }
+  func getMoreGamesInfo(pageInt: Int) -> AnyPublisher<GamesResponse,AFError>{
+    let detailRequest = ApiRequest(endpoint: .games, queryParameters: [
+      URLQueryItem(name: "page", value: "\(pageInt)")
+    ])
+    let call = ApiService.shared.execute(detailRequest,
+                                         expecting: GamesResponse.self)
+    return call
+  }
+
 }
 enum ApiEndpoint: String {
   case games = "/games"

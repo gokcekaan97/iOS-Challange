@@ -33,40 +33,67 @@ class GamesViewBuilder {
 class GamesViewController: UIViewController {
   public var viewModel: GamesViewModel!
   var cancellable = Set<AnyCancellable>()
+  var sections: Section?
+  var shouldRender = false {
+    didSet{
+      setupTableView()
+    }
+  }
   private let tableView = UITableView()
   private let renderer = Renderer(
-      adapter: UITableViewAdapter(),
-      updater: UITableViewUpdater()
+    adapter: GamesTableViewAdapter(),
+    updater: UITableViewUpdater()
   )
   override func viewDidLoad() {
     super.viewDidLoad()
-    renderer.target = tableView
-    viewModel.$shouldPush
-      .sink { [weak self] shouldPush in
-          if shouldPush {
-            self?.setupUI()
-          }
-      }.store(in: &cancellable)
-  }
-  func render(section: Section) {
-    renderer.render(section)
-  }
-
-  private func setupUI() {
     title = "Games"
     setSearchBar()
     view.addSubview(tableView)
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
-    let gameSection = makeGameSection()
-    render(section: gameSection)
+    renderer.target = tableView
+    viewModel.$shouldPush
+      .sink { [weak self] shouldPush in
+        if shouldPush {
+          self?.setupTableView()
+          self?.reload()
+        }
+      }.store(in: &cancellable)
+    renderer.adapter.$lastShown
+      .sink { [weak self] lastShown in
+        if lastShown {
+          self?.callMoreData()
+        }
+    }.store(in: &cancellable)
+  }
+  func render() {
+    renderer.render(sections)
+  }
+  func setupTableView(){
+    sections = makeGameSection()
+  }
+  func callMoreData(){
+    viewModel.getMoreGames()
+    setupTableView()
+    viewModel.$shouldPush
+      .sink{[weak self] shouldPush in
+        if shouldPush {
+          self?.reload()
+        }
+    }.store(in: &cancellable)
+  }
+  func reload(){
+    render()
+  }
+  func toggleShouldRender(){
+    shouldRender.toggle()
   }
   func setSearchBar(){
     let searchController = UISearchController()
-    searchController.obscuresBackgroundDuringPresentation = false // The default is true.
+    searchController.obscuresBackgroundDuringPresentation = false
     navigationItem.searchController = searchController
-    navigationItem.hidesSearchBarWhenScrolling = false // Make the search
+    navigationItem.hidesSearchBarWhenScrolling = false
   }
   func makeGameSection() -> Section {
     var section = Section(id: "Games")
@@ -85,8 +112,8 @@ class GamesViewController: UIViewController {
       }))
       section.cells.append(cell)
     }
-    let activityIndicator = CellNode(ActivityComponent(title: "", animating: true))
-    section.cells.append(activityIndicator)
+//    let activityIndicator = CellNode(ActivityComponent(title: "Activity Indicator", animating: true))
+//    section.cells.append(activityIndicator)
     return section
   }
 }

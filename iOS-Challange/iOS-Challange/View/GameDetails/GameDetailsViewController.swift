@@ -37,7 +37,7 @@ class GameDetailsViewController: UIViewController {
   private let tableView = UITableView()
   public var viewModel: GameDetailsViewModel!
   private let renderer = Renderer(
-      adapter: UITableViewAdapter(),
+      adapter: GamesTableViewAdapter(),
       updater: UITableViewUpdater()
   )
   override func viewDidLoad() {

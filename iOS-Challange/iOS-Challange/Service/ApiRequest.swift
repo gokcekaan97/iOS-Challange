@@ -23,14 +23,15 @@ final class ApiRequest {
       guard let id = gameId else {return ""}
       string += "\(id)"
     }
+    string += apiKey
     if !queryParameters.isEmpty{
+      string += "&"
       let parameters = queryParameters.compactMap({
         guard let value = $0.value else { return nil }
         return "\($0.name)=\(value)"
       }).joined(separator: "&")
     string += parameters
     }
-    string += apiKey
     return string
   }
   public var url: URL?{
