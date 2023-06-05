@@ -37,7 +37,9 @@ class GamesViewModel: ObservableObject{
     }.store(in: &cancellable)
   }
   func getMoreGames(){
-    if let searchString = searchText, searchText != ""{
+    if let searchString = searchText,
+       let searchTextCount = searchText?.count,
+       searchTextCount > 3{
       getSearch(name: searchString)
     }else {
       if let number = nextPage, nextPage != 0 {
@@ -70,6 +72,8 @@ class GamesViewModel: ObservableObject{
     self.gamesList.removeAll()
     self.nextPage = 0
     searchText = ""
+    self.shouldUpdate = false
+    self.shouldPush = false
   }
   func getSearch(name: String){
     self.shouldUpdate = false

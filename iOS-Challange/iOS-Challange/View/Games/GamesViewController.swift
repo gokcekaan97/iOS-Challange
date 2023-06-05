@@ -35,6 +35,7 @@ class GamesViewController: UIViewController {
   private var cancellable = Set<AnyCancellable>()
   private var sections = Section(id: "")
   private var sectionArray: [Section] = []
+  private var noSearch = Section(id: "no search")
   private let tableView = UITableView()
   private let searchController = UISearchController()
   private let renderer = Renderer(
@@ -49,6 +50,7 @@ class GamesViewController: UIViewController {
     title = "Games"
     view.addSubview(tableView)
     tableView.sectionHeaderTopPadding = 0.0
+    noSearch.cells.append(CellNode(noGameSearch(title:"")))
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
@@ -61,6 +63,13 @@ class GamesViewController: UIViewController {
     renderer.target = tableView
   }
   func didReady(){
+    if searchController.isActive, let textCount = searchController.searchBar.text?.count, textCount > 3{
+      didReadyLogic()
+    }else if !searchController.isActive{
+      didReadyLogic()
+    }
+  }
+  func didReadyLogic(){
     viewModel.$shouldPush
       .sink { [weak self] shouldPush in
         if shouldPush {
@@ -69,16 +78,27 @@ class GamesViewController: UIViewController {
       }.store(in: &cancellable)
   }
   func lastRowShown(){
+    if searchController.isActive, let textCount = searchController.searchBar.text?.count, textCount > 3{
+      lastRowShownLogic()
+    }else if !searchController.isActive{
+      lastRowShownLogic()
+    }
+  }
+  func lastRowShownLogic(){
     renderer.adapter.$lastShown
       .sink { [weak self] lastShown in
-        if lastShown {
+        if lastShown{
           self?.callMoreData()
         }
     }.store(in: &cancellable)
   }
   func setupCarbonTableView(){
     sections = makeGameSection()
-    sectionArray.append(sections)
+    if searchController.isActive, let count = searchController.searchBar.text?.count, count > 3 {
+      sectionArray.append(sections)
+    }else if !searchController.isActive{
+      sectionArray.append(sections)
+    }
     renderer.render(sectionArray)
   }
   func callMoreData(){
@@ -103,37 +123,62 @@ class GamesViewController: UIViewController {
     navigationItem.hidesSearchBarWhenScrolling = false
   }
   func makeGameSection() -> Section {
-    sectionArray = []
-    let activityIndicator = CellNode(ActivityComponent(title: "Activity Indicator"))
-    var section = Section(id: "Games")
-    for item in viewModel.gamesList{
-      var gameImageURL = URL(string: "")
-      do{
-        gameImageURL = try item.backgroundImage?.asURL()
+    if searchController.isActive, let count = searchController.searchBar.text?.count, count > 3 {
+      sectionArray = []
+      let activityIndicator = CellNode(ActivityComponent(title: "Activity Indicator"))
+      var section = Section(id: "Games")
+      for item in viewModel.gamesList{
+        var gameImageURL = URL(string: "")
+        do{
+          gameImageURL = try item.backgroundImage?.asURL()
+        }
+        catch let error {
+          print(error)
+        }
+        let cell = CellNode(GameItem(title: item.name,
+                                     metaScore: item.metacritic?.formatted(),
+                                     genre: item.genres,
+                                     image: gameImageURL,
+                                     onSelect: {
+          GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
+                                     gameId: item.id).pushCoordinator(animated: true, completion: nil)
+        }))
+        section.cells.append(cell)
       }
-      catch let error {
-        print(error)
+      section.cells.append(activityIndicator)
+      return section
+    }else if !searchController.isActive{
+      sectionArray = []
+      let activityIndicator = CellNode(ActivityComponent(title: "Activity Indicator"))
+      var section = Section(id: "Games")
+      for item in viewModel.gamesList{
+        var gameImageURL = URL(string: "")
+        do{
+          gameImageURL = try item.backgroundImage?.asURL()
+        }
+        catch let error {
+          print(error)
+        }
+        let cell = CellNode(GameItem(title: item.name,
+                                     metaScore: item.metacritic?.formatted(),
+                                     genre: item.genres,
+                                     image: gameImageURL,
+                                     onSelect: {
+          GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
+                                     gameId: item.id).pushCoordinator(animated: true, completion: nil)
+        }))
+        section.cells.append(cell)
       }
-      let cell = CellNode(GameItem(title: item.name,
-                                   metaScore: item.metacritic?.formatted(),
-                                   genre: item.genres,
-                                   image: gameImageURL,
-                                   onSelect: {
-        GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
-                                   gameId: item.id).pushCoordinator(animated: true, completion: nil)
-      }))
-      section.cells.append(cell)
+      section.cells.append(activityIndicator)
+      return section
     }
-    section.cells.append(activityIndicator)
-    return section
+    return noSearch
   }
-//  func clearSearch(){
-//    viewModel.gamesList.removeAll()
-//    viewModel.nextPage = 0
-//    viewModel.getGames()
-//    sectionArray = []
-//    didReady()
-//  }
+  func noSearchRender(){
+    sectionArray = []
+    sectionArray.append(noSearch)
+    renderer.render(sectionArray)
+  }
 }
 
 extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate{
@@ -143,10 +188,20 @@ extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdati
         viewModel.getSpecificGames(name: text)
       }
       clearCarbonView()
-    }else{
-      viewModel.removeData()
-//      no game has been searched view
     }
+//    else if let len = searchController.searchBar.text?.count, 1...3 ~= len {
+//      print(len)
+//      viewModel.removeData()
+//      noSearchRender()
+//      no game has been searched view
+//    }
+  }
+  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    viewModel.removeData()
+    sectionArray = []
+    sectionArray.append(noSearch)
+    renderer.render(sectionArray)
+//    noSearchRender()
   }
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     viewModel.removeData()
