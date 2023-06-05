@@ -32,36 +32,43 @@ class GamesViewBuilder {
 
 class GamesViewController: UIViewController {
   public var viewModel: GamesViewModel!
-  var cancellable = Set<AnyCancellable>()
-  var sections: Section?
-  var sectionArray: [Section] = []
-  var shouldRender = false {
-    didSet{
-      setupTableView()
-    }
-  }
+  private var cancellable = Set<AnyCancellable>()
+  private var sections = Section(id: "")
+  private var sectionArray: [Section] = []
   private let tableView = UITableView()
+  private let searchController = UISearchController()
   private let renderer = Renderer(
     adapter: GamesTableViewAdapter(),
     updater: UITableViewUpdater()
   )
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupUI()
+  }
+  func setupUI(){
     title = "Games"
-    setSearchBar()
     view.addSubview(tableView)
     tableView.sectionHeaderTopPadding = 0.0
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
+    setSearchBar()
+    setCarbon()
+    didReady()
+    lastRowShown()
+  }
+  func setCarbon(){
     renderer.target = tableView
+  }
+  func didReady(){
     viewModel.$shouldPush
       .sink { [weak self] shouldPush in
         if shouldPush {
-          self?.setupTableView()
-          self?.reload()
+          self?.setupCarbonTableView()
         }
       }.store(in: &cancellable)
+  }
+  func lastRowShown(){
     renderer.adapter.$lastShown
       .sink { [weak self] lastShown in
         if lastShown {
@@ -69,31 +76,28 @@ class GamesViewController: UIViewController {
         }
     }.store(in: &cancellable)
   }
-  func render() {
-    renderer.render(sectionArray)
-  }
-  func setupTableView(){
+  func setupCarbonTableView(){
     sections = makeGameSection()
-    sectionArray.append(sections ?? Section(id:""))
+    sectionArray.append(sections)
+    renderer.render(sectionArray)
   }
   func callMoreData(){
     viewModel.getMoreGames()
-    viewModel.$shouldPush
-      .sink{[weak self] shouldPush in
-        if shouldPush {
-          self?.reload()
+    viewModel.$shouldUpdate
+      .sink{[weak self] shouldUpdate in
+        if shouldUpdate {
+          self?.setupCarbonTableView()
         }
     }.store(in: &cancellable)
   }
-  func reload(){
-    setupTableView()
-    render()
-  }
-  func toggleShouldRender(){
-    shouldRender.toggle()
+  func clearCarbonView(){
+    sectionArray = []
+    renderer.render(sectionArray)
+    callMoreData()
   }
   func setSearchBar(){
-    let searchController = UISearchController()
+    searchController.searchResultsUpdater = self
+    searchController.searchBar.delegate = self
     searchController.obscuresBackgroundDuringPresentation = false
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
@@ -122,6 +126,31 @@ class GamesViewController: UIViewController {
     }
     section.cells.append(activityIndicator)
     return section
+  }
+//  func clearSearch(){
+//    viewModel.gamesList.removeAll()
+//    viewModel.nextPage = 0
+//    viewModel.getGames()
+//    sectionArray = []
+//    didReady()
+//  }
+}
+
+extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate{
+  func updateSearchResults(for searchController: UISearchController) {
+    if let len = searchController.searchBar.text?.count, len > 3{
+      if let text = searchController.searchBar.text{
+        viewModel.getSpecificGames(name: text)
+      }
+      clearCarbonView()
+    }else{
+      viewModel.removeData()
+//      no game has been searched view
+    }
+  }
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    viewModel.removeData()
+    clearCarbonView()
   }
 }
 

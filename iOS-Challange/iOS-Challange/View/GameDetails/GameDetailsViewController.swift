@@ -42,6 +42,7 @@ class GameDetailsViewController: UIViewController {
   )
   override func viewDidLoad() {
     super.viewDidLoad()
+    tableView.sectionHeaderTopPadding = 0.0
     self.navigationItem.largeTitleDisplayMode = .never
     self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Favourite",
                                                                   style: .plain,

@@ -23,7 +23,8 @@ class GamesTabBar: UITabBarController {
     )
     tabOne.tabBarItem = tabOneBarItem
     let gameView = UINavigationController(rootViewController: tabOne)
-    guard let tabTwo = GamesViewBuilder().build() else {return}
+//    guard let tabTwo = GamesViewBuilder().build() else {return}
+    let tabTwo = UIViewController()
     let tabTwoBarItem2 = UITabBarItem(
       title: "Favorites",
       image: UIImage(named: "Icon"),

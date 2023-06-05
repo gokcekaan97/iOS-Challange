@@ -64,14 +64,14 @@ class GamesView: UIView {
     self.addSubview(gameMetaScore)
     self.addSubview(gameTitle)
     gameImage.snp.makeConstraints { (make) in
-      make.top.left.equalTo(16)
+      make.top.left.equalToSuperview().offset(16)
       make.bottom.equalTo(-16)
       make.height.equalTo(104)
       make.width.equalTo(120)
     }
     gameTitle.snp.makeConstraints { make in
-      make.top.equalTo(16)
-      make.right.equalTo(-16)
+      make.top.equalToSuperview().offset(16)
+      make.right.equalToSuperview().inset(16)
       make.width.equalTo(207)
       make.left.equalTo(gameImage.snp.right).offset(16)
     }
@@ -88,7 +88,7 @@ class GamesView: UIView {
       make.left.equalTo(gameImage.snp.right).offset(16)
       make.top.equalTo(gameMeta.snp.bottom).offset(8)
       make.top.equalTo(gameMetaScore.snp.bottom).offset(8)
-      make.right.equalToSuperview().offset(-16)
+      make.right.equalToSuperview().inset(16)
     }
   }
 }
@@ -126,6 +126,7 @@ struct GameItem: IdentifiableComponent {
     content.gameGenre.text = genreToString(array: genre)
     content.gameImage.kf.setImage(with: image, options: [.processor(downsampling)])
     content.onSelect = onSelect
+//    content.backgroundColor = .systemGray
   }
   func genreToString(array:[Genre]) -> String{
     let string = array.map { genre in
