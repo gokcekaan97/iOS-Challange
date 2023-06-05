@@ -102,13 +102,17 @@ class GamesViewController: UIViewController {
     sectionArray = []
     var section = Section(id: "Games")
     for item in viewModel.gamesList{
-      guard let urlString = item.backgroundImage, let metaScore = item.metacritic else { continue}
-      let tempImageURL = URL(string: urlString)
-      let metaScoreString = String(describing: metaScore)
+      var gameImageURL = URL(string: "")
+      do{
+        gameImageURL = try item.backgroundImage?.asURL()
+      }
+      catch let error {
+        print(error)
+      }
       let cell = CellNode(GameItem(title: item.name,
-                                   metaScore: metaScoreString,
+                                   metaScore: item.metacritic?.formatted(),
                                    genre: item.genres,
-                                   image: tempImageURL,
+                                   image: gameImageURL,
                                    onSelect: {
         GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
                                    gameId: item.id).pushCoordinator(animated: true, completion: nil)
