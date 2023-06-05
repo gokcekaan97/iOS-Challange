@@ -100,6 +100,7 @@ class GamesViewController: UIViewController {
   }
   func makeGameSection() -> Section {
     sectionArray = []
+    let activityIndicator = CellNode(ActivityComponent(title: "Activity Indicator"))
     var section = Section(id: "Games")
     for item in viewModel.gamesList{
       var gameImageURL = URL(string: "")
@@ -119,8 +120,7 @@ class GamesViewController: UIViewController {
       }))
       section.cells.append(cell)
     }
-//    let activityIndicator = CellNode(ActivityComponent(title: "Activity Indicator", animating: true))
-//    section.cells.append(activityIndicator)
+    section.cells.append(activityIndicator)
     return section
   }
 }

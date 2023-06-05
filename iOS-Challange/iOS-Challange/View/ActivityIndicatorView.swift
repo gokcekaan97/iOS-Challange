@@ -33,7 +33,6 @@ class ActivityIndicatorView: UIView {
 }
 struct ActivityComponent: IdentifiableComponent {
   var title: String
-  var animating: Bool
   var id: String {
     title
   }
@@ -51,9 +50,7 @@ struct ActivityComponent: IdentifiableComponent {
   }
 
   func render(in content: ActivityIndicatorView) {
-    if animating{
       content.activityIndicator.isHidden = false
       content.activityIndicator.startAnimating()
-    } 
   }
 }

@@ -17,7 +17,7 @@ class GamesTableViewAdapter: UITableViewAdapter {
   override func tableView(_ tableView: UITableView,
                           willDisplay cell: UITableViewCell,
                           forRowAt indexPath: IndexPath) {
-    if indexPath.row ==  tableView.numberOfRows(inSection: 0) - 2 {
+    if indexPath.row ==  tableView.numberOfRows(inSection: 0) - 1{
       if !lastShown{
         lastShown = true
       }
