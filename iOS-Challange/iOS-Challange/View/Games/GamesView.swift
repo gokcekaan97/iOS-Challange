@@ -102,6 +102,7 @@ struct GameItem: IdentifiableComponent {
   }
   
   var title: String
+  let downsampling = DownsamplingImageProcessor(size: CGSize(width: 120, height: 104))
   var metaScore: String
   var genre: [Genre]
   var image: URL?
@@ -119,7 +120,7 @@ struct GameItem: IdentifiableComponent {
     content.gameMeta.text = "metacritic:"
     content.gameMetaScore.text = metaScore
     content.gameGenre.text = genreToString(array: genre)
-    content.gameImage.kf.setImage(with: image)
+    content.gameImage.kf.setImage(with: image, options: [.processor(downsampling)])
     content.onSelect = onSelect
   }
   func genreToString(array:[Genre]) -> String{
