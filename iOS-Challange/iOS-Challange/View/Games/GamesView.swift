@@ -17,7 +17,7 @@ class GamesView: UIView {
     let label = UILabel()
     label.font = UIFont.boldSystemFont(ofSize: 20)
     label.textAlignment = .left
-    label.numberOfLines = 0
+    label.numberOfLines = 2
     return label
   }()
   let gameMeta: UILabel = {

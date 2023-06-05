@@ -21,6 +21,10 @@ class GamesTableViewAdapter: UITableViewAdapter {
       if !lastShown{
         lastShown = true
       }
+    }else{
+      if lastShown{
+        lastShown = false
+      }
     }
   }
 }

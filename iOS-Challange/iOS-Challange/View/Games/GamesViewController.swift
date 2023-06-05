@@ -34,6 +34,7 @@ class GamesViewController: UIViewController {
   public var viewModel: GamesViewModel!
   var cancellable = Set<AnyCancellable>()
   var sections: Section?
+  var sectionArray: [Section] = []
   var shouldRender = false {
     didSet{
       setupTableView()
@@ -49,6 +50,7 @@ class GamesViewController: UIViewController {
     title = "Games"
     setSearchBar()
     view.addSubview(tableView)
+    tableView.sectionHeaderTopPadding = 0.0
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
@@ -68,14 +70,14 @@ class GamesViewController: UIViewController {
     }.store(in: &cancellable)
   }
   func render() {
-    renderer.render(sections)
+    renderer.render(sectionArray)
   }
   func setupTableView(){
     sections = makeGameSection()
+    sectionArray.append(sections ?? Section(id:""))
   }
   func callMoreData(){
     viewModel.getMoreGames()
-    setupTableView()
     viewModel.$shouldPush
       .sink{[weak self] shouldPush in
         if shouldPush {
@@ -84,6 +86,7 @@ class GamesViewController: UIViewController {
     }.store(in: &cancellable)
   }
   func reload(){
+    setupTableView()
     render()
   }
   func toggleShouldRender(){
@@ -96,11 +99,11 @@ class GamesViewController: UIViewController {
     navigationItem.hidesSearchBarWhenScrolling = false
   }
   func makeGameSection() -> Section {
+    sectionArray = []
     var section = Section(id: "Games")
     for item in viewModel.gamesList{
-      guard let urlString = item.backgroundImage else {return Section(id: "")}
+      guard let urlString = item.backgroundImage, let metaScore = item.metacritic else { continue}
       let tempImageURL = URL(string: urlString)
-      guard let metaScore = item.metacritic else {return Section(id: "")}
       let metaScoreString = String(describing: metaScore)
       let cell = CellNode(GameItem(title: item.name,
                                    metaScore: metaScoreString,
