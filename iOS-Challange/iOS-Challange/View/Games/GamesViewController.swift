@@ -189,19 +189,12 @@ extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdati
       }
       clearCarbonView()
     }
-//    else if let len = searchController.searchBar.text?.count, 1...3 ~= len {
-//      print(len)
-//      viewModel.removeData()
-//      noSearchRender()
-//      no game has been searched view
-//    }
   }
   func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
     viewModel.removeData()
     sectionArray = []
     sectionArray.append(noSearch)
     renderer.render(sectionArray)
-//    noSearchRender()
   }
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     viewModel.removeData()

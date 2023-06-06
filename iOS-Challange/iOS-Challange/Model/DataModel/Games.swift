@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct Games: Codable {
   let id: Int
@@ -21,4 +22,9 @@ struct Games: Codable {
     case backgroundImage = "background_image"
     case metacritic
   }
+}
+class GamesObject: Object {
+  @Persisted var id: Int
+  @Persisted var didShown: Bool = false
+  @Persisted var isFavourite: Bool = false
 }

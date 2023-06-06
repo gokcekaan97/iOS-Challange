@@ -6,6 +6,7 @@ target 'iOS-Challange' do
   use_frameworks!
 pod 'Carbon'
 pod 'SnapKit'
+pod 'RealmSwift'
 pod 'SwiftLint'
 pod 'Alamofire'
 pod 'Kingfisher'

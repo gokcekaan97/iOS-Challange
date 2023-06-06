@@ -4,6 +4,11 @@ PODS:
     - DifferenceKit/Core (~> 1.1)
   - DifferenceKit/Core (1.3.0)
   - Kingfisher (7.6.1)
+  - Realm (10.37.0):
+    - Realm/Headers (= 10.37.0)
+  - Realm/Headers (10.37.0)
+  - RealmSwift (10.37.0):
+    - Realm (= 10.37.0)
   - SnapKit (5.6.0)
   - SwiftLint (0.52.2)
 
@@ -11,6 +16,7 @@ DEPENDENCIES:
   - Alamofire
   - Carbon
   - Kingfisher
+  - RealmSwift
   - SnapKit
   - SwiftLint
 
@@ -20,6 +26,8 @@ SPEC REPOS:
     - Carbon
     - DifferenceKit
     - Kingfisher
+    - Realm
+    - RealmSwift
     - SnapKit
     - SwiftLint
 
@@ -28,9 +36,11 @@ SPEC CHECKSUMS:
   Carbon: 184148b60fddb7d069a9d35a02e12b20f44aa7a8
   DifferenceKit: ab185c4d7f9cef8af3fcf593e5b387fb81e999ca
   Kingfisher: 93a3c6d0d551658a31e19f21747e1d15cb39d525
+  Realm: 9c5fc6f8f5cb70b299f2e3064d2b9f6cb0f1523d
+  RealmSwift: 7be7bb45911c16400dd1bfce3a01764ecb4cae7a
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwiftLint: 1ac76dac888ca05cb0cf24d0c85887ec1209961d
 
-PODFILE CHECKSUM: ad4d8164eb7fa115a4496a37d4ac0014ca9e0565
+PODFILE CHECKSUM: fb0000374b088ac6238e6fac93b461e80cd60c86
 
 COCOAPODS: 1.11.3
