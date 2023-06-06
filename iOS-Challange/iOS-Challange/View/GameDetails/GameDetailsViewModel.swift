@@ -34,4 +34,12 @@ class GameDetailsViewModel: ObservableObject{
       gamesUseCase.favourite(game: game)
     }
   }
+  func favouritesExist(gameInt: Int) -> Bool{
+    return gamesUseCase.favouritesExist(gameInt: gameInt)
+  }
+  func shownGame(){
+    if let game = gameDetails{
+      gamesUseCase.shown(game: game)
+    }
+  }
 }

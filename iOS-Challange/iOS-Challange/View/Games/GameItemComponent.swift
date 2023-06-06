@@ -24,6 +24,7 @@ struct GameItem: IdentifiableComponent {
   var genre: String?
   var image: URL?
   var onSelect: () -> Void
+  var shownBool: Bool?
   var id: String {
     title
   }
@@ -43,6 +44,10 @@ struct GameItem: IdentifiableComponent {
     content.gameGenre.text = genre
     content.gameImage.kf.setImage(with: image, options: [.processor(downsampling)])
     content.onSelect = onSelect
-//    content.backgroundColor = .systemGray
+    if let bool = shownBool, bool{
+      content.backgroundColor = .systemGray
+    }else {
+      content.backgroundColor = .systemBackground
+    }
   }
 }

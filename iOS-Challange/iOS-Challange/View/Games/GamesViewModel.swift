@@ -94,6 +94,9 @@ class GamesViewModel: ObservableObject{
       }.store(in: &cancellable)
     }
   }
+  func didGameShown(game:Games) -> Bool{
+    return gamesUseCase.didShown(game: game)
+  }
 //  func favourite(games:Int){
 //    gamesUseCase.favourite(game: games)
 //  }

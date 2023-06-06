@@ -48,8 +48,7 @@ class GamesViewController: UIViewController {
   }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    searchController.searchBar.text = ""
-    clearCarbonView()
+    self.searchController.searchBar.text = ""
   }
   func setupUI(){
     title = "Games"
@@ -147,7 +146,8 @@ class GamesViewController: UIViewController {
                                      onSelect: {
           GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
                                      gameId: item.id).pushCoordinator(animated: true, completion: nil)
-        }))
+        },
+                                     shownBool: viewModel.didGameShown(game: item)))
         section.cells.append(cell)
       }
       section.cells.append(activityIndicator)
@@ -171,7 +171,8 @@ class GamesViewController: UIViewController {
                                      onSelect: {
           GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
                                      gameId: item.id).pushCoordinator(animated: true, completion: nil)
-        }))
+        },
+                                     shownBool: viewModel.didGameShown(game: item)))
         section.cells.append(cell)
       }
       section.cells.append(activityIndicator)

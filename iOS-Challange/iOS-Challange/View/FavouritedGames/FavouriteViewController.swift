@@ -75,7 +75,7 @@ class FavouriteViewController: UIViewController {
   func renderSection(){
     viewModel.getFavouritedGames()
     viewModel.getFavouritesCount()
-    if viewModel.favouritedExist == 0{
+    if viewModel.favouritedCounter == 0{
       sectionArray = []
       let noFavouritedSection = makeNoFavouritedSection()
       sectionArray.append(noFavouritedSection)

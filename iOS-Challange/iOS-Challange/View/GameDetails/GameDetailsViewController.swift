@@ -36,6 +36,7 @@ class GameDetailsViewController: UIViewController {
 
   private let tableView = UITableView()
   public var viewModel: GameDetailsViewModel!
+  public var gameFavourited = false
   private let renderer = Renderer(
       adapter: UITableViewAdapter(),
       updater: UITableViewUpdater()
@@ -44,10 +45,6 @@ class GameDetailsViewController: UIViewController {
     super.viewDidLoad()
     tableView.sectionHeaderTopPadding = 0.0
     self.navigationItem.largeTitleDisplayMode = .never
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Favourite",
-                                                                  style: .plain,
-                                                                  target: self,
-                                                                  action: #selector(favoriteButtonTapped))
     view.backgroundColor = .systemBackground
     renderer.target = tableView
     viewModel.$shouldPush
@@ -59,14 +56,35 @@ class GameDetailsViewController: UIViewController {
   }
   @objc func favoriteButtonTapped(){
     viewModel.favourite()
+    if let gameId = viewModel.gameDetails?.id{
+      gameFavourited = viewModel.favouritesExist(gameInt: gameId)
+      if gameFavourited{
+        self.navigationItem.rightBarButtonItem?.title = "Favourited"
+      }else{
+        self.navigationItem.rightBarButtonItem?.title = "Favourite"
+      }
+    }
   }
   private func setupUI() {
     view.addSubview(tableView)
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
+    viewModel.shownGame()
     let gameDetailSection = makeGameSection()
     render(section: gameDetailSection)
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "",
+                                                                  style: .plain,
+                                                                  target: self,
+                                                                  action: #selector(favoriteButtonTapped))
+    if let gameId = viewModel.gameDetails?.id{
+      gameFavourited = viewModel.favouritesExist(gameInt: gameId)
+      if gameFavourited{
+        self.navigationItem.rightBarButtonItem?.title = "Favourited"
+      }else{
+        self.navigationItem.rightBarButtonItem?.title = "Favourite"
+      }
+    }
   }
   func render(section: Section) {
     renderer.render(section)
@@ -76,12 +94,20 @@ class GameDetailsViewController: UIViewController {
     guard let urlString = viewModel.gameDetails?.backgroundImage else {return Section(id: "")}
     guard let gameName = viewModel.gameDetails?.name else {return Section(id: "")}
     guard let gameDescription = viewModel.gameDetails?.description else {return Section(id: "")}
+    guard let redditUrl = viewModel.gameDetails?.redditUrl else {fatalError("")}
+    guard let websiteUrl = viewModel.gameDetails?.website else {return Section(id: "")}
     let tempImageURL = URL(string: urlString)
     let cell = CellNode(GameDetail(title: gameName,
                                    description: gameDescription,
                                    image: tempImageURL))
-    let redditCell = CellNode(GameDetailVisit(title: "reddit"))
-    let websiteCell = CellNode(GameDetailVisit(title: "website"))
+    let redditCell = CellNode(GameDetailVisit(title: "reddit",onSelect: {
+      guard let url = URL(string: redditUrl) else { return }
+      UIApplication.shared.open(url)
+    }))
+    let websiteCell = CellNode(GameDetailVisit(title: "website",onSelect: {
+      guard let url = URL(string: websiteUrl) else { return }
+      UIApplication.shared.open(url)
+    }))
     section.cells.append(cell)
     section.cells.append(redditCell)
     section.cells.append(websiteCell)

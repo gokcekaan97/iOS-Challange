@@ -105,16 +105,23 @@ class GameDetailsVisitView: UIView {
     label.textAlignment = .left
     return label
   }()
+  var onSelect: (() -> Void)?
+  let tap = UITapGestureRecognizer()
   override init(frame: CGRect) {
     super.init(frame: frame)
     self.setupUI()
-    }
+  }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
+  @objc func handleSelect() {
+      onSelect?()
+  }
   func setupUI() {
+    tap.addTarget(self, action: #selector(handleSelect))
+    self.addGestureRecognizer(tap)
+    self.isUserInteractionEnabled = true
     self.translatesAutoresizingMaskIntoConstraints = false
     self.addSubview(gameVisitLabel)
     gameVisitLabel.snp.makeConstraints { (make) in
@@ -126,6 +133,7 @@ class GameDetailsVisitView: UIView {
 }
 struct GameDetailVisit: IdentifiableComponent {
   var title: String
+  var onSelect: () -> Void
   var id: String {
     title
   }
@@ -144,6 +152,7 @@ struct GameDetailVisit: IdentifiableComponent {
 
   func render(in content: GameDetailsVisitView) {
     content.gameVisitLabel.text = "Visit \(title)"
+    content.onSelect = onSelect
   }
 }
 

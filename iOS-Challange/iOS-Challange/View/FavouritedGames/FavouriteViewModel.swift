@@ -9,12 +9,12 @@ import Foundation
 import Combine
 
 class FavouriteViewModel{
-  var favouritedExist: Int
+  var favouritedCounter: Int
   let gamesUseCase = GamesUseCase()
   var cancellable = Set<AnyCancellable>()
   var favouritedGames: [GamesObject] = []
   init() {
-    favouritedExist = gamesUseCase.favouriteCount()
+    favouritedCounter = gamesUseCase.favouriteCount()
     favouritedGames = gamesUseCase.favourites()
   }
   func getGame(gameId:Int) {
@@ -33,6 +33,6 @@ class FavouriteViewModel{
     favouritedGames = gamesUseCase.favourites()
   }
   func getFavouritesCount(){
-    favouritedExist = gamesUseCase.favouriteCount()
+    favouritedCounter = gamesUseCase.favouriteCount()
   }
 }
