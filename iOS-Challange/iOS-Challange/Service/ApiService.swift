@@ -30,11 +30,16 @@ final class ApiService {
         .receive(on: DispatchQueue.main)
         .eraseToAnyPublisher()
   }
-  func favourite(game: Games){
+  func favourite(game: GameDetails){
     let id = game.id
     let favoriteGame = GamesObject()
     favoriteGame.id = id
+    favoriteGame.name = game.name
     favoriteGame.isFavourite = true
+    favoriteGame.didShown = true
+    favoriteGame.backgroundImage = game.backgroundImage
+    favoriteGame.genres = genreToString(array: game.genres)
+    favoriteGame.metacritic = game.metacritic
     let gameExist = realm.objects(GamesObject.self).where{
       $0.id == id
     }
@@ -42,19 +47,31 @@ final class ApiService {
       try! realm.write {
         realm.add(favoriteGame)
       }
+    }else{
+      try! realm.write{
+        realm.delete(gameExist)
+      }
     }
   }
-  func isFavourited(game: Games) -> Bool {
-    let id = game.id
+  func favouritesExist() -> Bool {
     var bool = false
-    let favoriteGame = realm.objects(GamesObject.self).where{
-      $0.id == id
-    }
-    if !favoriteGame.isEmpty, let gameFavourited = favoriteGame.first?.isFavourite {
-      bool = gameFavourited
+    let favoriteGame = realm.objects(GamesObject.self).first
+    if favoriteGame == nil {
+      bool = false
+    }else{
+      bool = true
     }
     return bool
   }
+  func favourites() -> [GamesObject] {
+    let favoriteGames = realm.objects(GamesObject.self).toArray() as [GamesObject]
+    return favoriteGames
+  }
+  func favouriteCount() -> Int {
+    let favoriteGames = realm.objects(GamesObject.self).toArray() as [GamesObject]
+    return favoriteGames.count
+  }
+
 //  func shown(game: Games){
 //    let id = game.id
 //    let shownGame = GamesObject()
@@ -80,16 +97,22 @@ final class ApiService {
 //    }
 //    return bool
 //  }
-  func unFavourite(game: Games) {
-    let id = game.id
-    let favouriteGame = realm.objects(GamesObject.self).where{
-      $0.id == id
+//  func unFavourite(game: Int) {
+//    let id = game
+//    let favouriteGame = realm.objects(GamesObject.self).where{
+//      $0.id == id
+//    }
+//    if !favouriteGame.isEmpty{
+//      try! realm.write{
+//        favouriteGame.first?.setValue(false, forKey: "isFavourite")
+//      }
+//    }
+//  }
+  func genreToString(array:[Genre]) -> String{
+    let string = array.map { genre in
+      "\(genre.name ?? "")"
     }
-    if !favouriteGame.isEmpty{
-      try! realm.write{
-        favouriteGame.first?.setValue(false, forKey: "isFavourite")
-      }
-    }
+    return string.joined(separator: ", ")
   }
 }
   protocol GamesUseCaseType {
@@ -97,9 +120,11 @@ final class ApiService {
     func getMoreGamesInfo(pageInt: Int) -> AnyPublisher<GamesResponse,AFError>
     func getSpecificGamesInfo(name:String, pageInt: Int) -> AnyPublisher<GamesResponse,AFError>
     func getGameDetail(gameId:Int) -> AnyPublisher<GameDetails,AFError>
-    func favourite(game:Games)
-    func unFavourite(game:Games)
-    func isFavourite(game:Games) -> Bool
+    func favourite(game:GameDetails)
+//    func unFavourite(game:Int)
+    func favouritesExist() -> Bool
+    func favouriteCount() -> Int
+    func favourites() -> [GamesObject]
   }
   struct GamesUseCase : GamesUseCaseType {
     func getGamesInfo() -> AnyPublisher<GamesResponse,AFError>{
@@ -138,14 +163,20 @@ final class ApiService {
                                            expecting: GamesResponse.self)
       return call
     }
-    func unFavourite(game: Games){
-      ApiService.shared.unFavourite(game: game)
-    }
-    func favourite(game: Games) {
+//    func unFavourite(game: Int){
+//      ApiService.shared.unFavourite(game: game)
+//    }
+    func favourite(game: GameDetails) {
       ApiService.shared.favourite(game: game)
     }
-    func isFavourite(game: Games) -> Bool{
-      return ApiService.shared.isFavourited(game: game)
+    func favouritesExist() -> Bool{
+      return ApiService.shared.favouritesExist()
+    }
+    func favourites() -> [GamesObject]{
+      return ApiService.shared.favourites()
+    }
+    func favouriteCount() -> Int {
+      return ApiService.shared.favouriteCount()
     }
   }
   enum ApiEndpoint: String {

@@ -37,7 +37,7 @@ class GameDetailsViewController: UIViewController {
   private let tableView = UITableView()
   public var viewModel: GameDetailsViewModel!
   private let renderer = Renderer(
-      adapter: GamesTableViewAdapter(),
+      adapter: UITableViewAdapter(),
       updater: UITableViewUpdater()
   )
   override func viewDidLoad() {
@@ -47,7 +47,7 @@ class GameDetailsViewController: UIViewController {
     self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Favourite",
                                                                   style: .plain,
                                                                   target: self,
-                                                                  action: nil)
+                                                                  action: #selector(favoriteButtonTapped))
     view.backgroundColor = .systemBackground
     renderer.target = tableView
     viewModel.$shouldPush
@@ -58,7 +58,7 @@ class GameDetailsViewController: UIViewController {
       }.store(in: &cancellable)
   }
   @objc func favoriteButtonTapped(){
-    print("tapped")
+    viewModel.favourite()
   }
   private func setupUI() {
     view.addSubview(tableView)

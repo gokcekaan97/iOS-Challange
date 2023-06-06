@@ -46,6 +46,11 @@ class GamesViewController: UIViewController {
     super.viewDidLoad()
     setupUI()
   }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    searchController.searchBar.text = ""
+    clearCarbonView()
+  }
   func setupUI(){
     title = "Games"
     view.addSubview(tableView)
@@ -137,7 +142,7 @@ class GamesViewController: UIViewController {
         }
         let cell = CellNode(GameItem(title: item.name,
                                      metaScore: item.metacritic?.formatted(),
-                                     genre: item.genres,
+                                     genre: genreToString(array: item.genres),
                                      image: gameImageURL,
                                      onSelect: {
           GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
@@ -161,7 +166,7 @@ class GamesViewController: UIViewController {
         }
         let cell = CellNode(GameItem(title: item.name,
                                      metaScore: item.metacritic?.formatted(),
-                                     genre: item.genres,
+                                     genre: genreToString(array: item.genres),
                                      image: gameImageURL,
                                      onSelect: {
           GameDetailsViewCoordinator(router: self.navigationController ?? UINavigationController(),
@@ -199,6 +204,12 @@ extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdati
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     viewModel.removeData()
     clearCarbonView()
+  }
+  func genreToString(array:[Genre]) -> String{
+    let string = array.map { genre in
+      "\(genre.name ?? "")"
+    }
+    return string.joined(separator: ", ")
   }
 }
 

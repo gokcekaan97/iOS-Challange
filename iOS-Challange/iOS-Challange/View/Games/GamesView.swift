@@ -55,34 +55,34 @@ class GamesView: UIView {
       onSelect?()
   }
   func setupUI() {
+    backgroundColor = UIColor(hexString: "#FFFFFF")
     tap.addTarget(self, action: #selector(handleSelect))
     self.addGestureRecognizer(tap)
     self.isUserInteractionEnabled = true
     self.addSubview(gameImage)
-    self.addSubview(gameMeta)
-    self.addSubview(gameGenre)
-    self.addSubview(gameMetaScore)
-    self.addSubview(gameTitle)
     gameImage.snp.makeConstraints { (make) in
       make.top.left.equalToSuperview().offset(16)
       make.bottom.equalTo(-16)
       make.height.equalTo(104)
       make.width.equalTo(120)
     }
+    self.addSubview(gameTitle)
     gameTitle.snp.makeConstraints { make in
       make.top.equalToSuperview().offset(16)
-      make.right.equalToSuperview().inset(16)
       make.width.equalTo(207)
       make.left.equalTo(gameImage.snp.right).offset(16)
     }
+    self.addSubview(gameMeta)
     gameMeta.snp.makeConstraints { make in
       make.width.equalTo(76)
       make.left.equalTo(gameImage.snp.right).offset(16)
     }
+    self.addSubview(gameMetaScore)
     gameMetaScore.snp.makeConstraints { make in
       make.width.equalTo(26)
       make.left.equalTo(gameMeta.snp.right)
     }
+    self.addSubview(gameGenre)
     gameGenre.snp.makeConstraints { make in
       make.bottom.equalTo(-12)
       make.left.equalTo(gameImage.snp.right).offset(16)

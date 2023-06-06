@@ -23,8 +23,13 @@ struct Games: Codable {
     case metacritic
   }
 }
+
 class GamesObject: Object {
   @Persisted var id: Int
+  @Persisted var name: String
   @Persisted var didShown: Bool = false
   @Persisted var isFavourite: Bool = false
+  @Persisted var genres: String
+  @Persisted var backgroundImage: String?
+  @Persisted var metacritic : Int?
 }

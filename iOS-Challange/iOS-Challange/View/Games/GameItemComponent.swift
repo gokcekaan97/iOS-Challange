@@ -21,7 +21,7 @@ struct GameItem: IdentifiableComponent {
   var title: String
   let downsampling = DownsamplingImageProcessor(size: CGSize(width: 120, height: 104))
   var metaScore: String?
-  var genre: [Genre]
+  var genre: String?
   var image: URL?
   var onSelect: () -> Void
   var id: String {
@@ -40,15 +40,9 @@ struct GameItem: IdentifiableComponent {
     }else {
       content.gameMetaScore.text = "NA"
     }
-    content.gameGenre.text = genreToString(array: genre)
+    content.gameGenre.text = genre
     content.gameImage.kf.setImage(with: image, options: [.processor(downsampling)])
     content.onSelect = onSelect
 //    content.backgroundColor = .systemGray
-  }
-  func genreToString(array:[Genre]) -> String{
-    let string = array.map { genre in
-      "\(genre.name ?? "")"
-    }
-    return string.joined(separator: ", ")
   }
 }

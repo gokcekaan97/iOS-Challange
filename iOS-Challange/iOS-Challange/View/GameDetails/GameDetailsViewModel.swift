@@ -18,15 +18,20 @@ class GameDetailsViewModel: ObservableObject{
     getGame(gameId: gameId)
   }
   func getGame(gameId:Int) {
-      gamesUseCase.getGameDetail(gameId: gameId).sink { completion in
-        switch completion{
-        case .failure(let error):
-          print(error)
-        case .finished:
-          self.shouldPush = true
-        }
-      } receiveValue: { GameDetails in
-        self.gameDetails = GameDetails
-      }.store(in: &cancellable)
+    gamesUseCase.getGameDetail(gameId: gameId).sink { completion in
+      switch completion{
+      case .failure(let error):
+        print(error)
+      case .finished:
+        self.shouldPush = true
+      }
+    } receiveValue: { GameDetails in
+      self.gameDetails = GameDetails
+    }.store(in: &cancellable)
+  }
+  func favourite(){
+    if let game = gameDetails{
+      gamesUseCase.favourite(game: game)
     }
+  }
 }

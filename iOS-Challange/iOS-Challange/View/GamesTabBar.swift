@@ -23,8 +23,7 @@ class GamesTabBar: UITabBarController {
     )
     tabOne.tabBarItem = tabOneBarItem
     let gameView = UINavigationController(rootViewController: tabOne)
-//    guard let tabTwo = GamesViewBuilder().build() else {return}
-    let tabTwo = UIViewController()
+    guard let tabTwo = FavouriteViewBuilder().build() else {return}
     let tabTwoBarItem2 = UITabBarItem(
       title: "Favorites",
       image: UIImage(named: "Icon"),
@@ -39,7 +38,6 @@ class GamesTabBar: UITabBarController {
     let titleTextAttributes: [NSAttributedString.Key: Any] = [
       .foregroundColor: UIColor.label
     ]
-    appearance.tintColor = .label
     appearance.prefersLargeTitles = true
     appearance.isTranslucent = true
     appearance.titleTextAttributes = titleTextAttributes
