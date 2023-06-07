@@ -57,11 +57,9 @@ final class ApiService {
   func favouritesExist(gameInt: Int) -> Bool {
     let id = gameInt
     var bool = false
-    
     let favouriteGame = realm.objects(GamesObject.self).where {
       $0.id == id
     }
-    print(favouriteGame)
     if !favouriteGame.isEmpty {
       if let gameFavouriteBool = favouriteGame.first, gameFavouriteBool.isFavourite == false{
         bool = false
@@ -70,6 +68,17 @@ final class ApiService {
       }
     }
     return bool
+  }
+  func unFavourite(game: Int) {
+    let id = game
+    let gameExist = realm.objects(GamesObject.self).where{
+      $0.id == id
+    }
+    if let favouritedGameBool = gameExist.first?.isFavourite, favouritedGameBool == true{
+      try! realm.write{
+        gameExist.first?.setValue(false, forKey: "isFavourite")
+      }
+    }
   }
   func favourites() -> [GamesObject] {
     let favoriteGames = realm.objects(GamesObject.self).where{
@@ -116,17 +125,6 @@ final class ApiService {
     }
     return bool
   }
-//  func unFavourite(game: Int) {
-//    let id = game
-//    let favouriteGame = realm.objects(GamesObject.self).where{
-//      $0.id == id
-//    }
-//    if !favouriteGame.isEmpty{
-//      try! realm.write{
-//        favouriteGame.first?.setValue(false, forKey: "isFavourite")
-//      }
-//    }
-//  }
   func genreToString(array:[Genre]) -> String{
     let string = array.map { genre in
       "\(genre.name ?? "")"
@@ -140,7 +138,7 @@ final class ApiService {
     func getSpecificGamesInfo(name:String, pageInt: Int) -> AnyPublisher<GamesResponse,AFError>
     func getGameDetail(gameId:Int) -> AnyPublisher<GameDetails,AFError>
     func favourite(game:GameDetails)
-//    func unFavourite(game:Int)
+    func unFavourite(game:Int)
     func favouritesExist(gameInt: Int) -> Bool
     func shown(game: GameDetails)
     func didShown(game: Games) -> Bool
@@ -187,9 +185,9 @@ struct GamesUseCase : GamesUseCaseType {
                                            expecting: GamesResponse.self)
       return call
     }
-//    func unFavourite(game: Int){
-//      ApiService.shared.unFavourite(game: game)
-//    }
+    func unFavourite(game: Int){
+      ApiService.shared.unFavourite(game: game)
+    }
     func favourite(game: GameDetails) {
       ApiService.shared.favourite(game: game)
     }

@@ -8,11 +8,13 @@
 import UIKit
 import Carbon
 import SnapKit
+import Combine
 
 class FavouriteViewBuilder {
   func build() -> UIViewController? {
     let favouriViewController = FavouriteViewController()
-    favouriViewController.viewModel = FavouriteViewModel()
+    let favouriteViewModel = FavouriteViewModel()
+    favouriViewController.viewModel = favouriteViewModel
     return favouriViewController
   }
 }
@@ -20,13 +22,15 @@ class FavouriteViewController: UIViewController {
   private let tableView = UITableView()
   public var viewModel: FavouriteViewModel!
   private var sectionArray: [Section] = []
-  private let renderer = Renderer(
-      adapter: UITableViewAdapter(),
-      updater: UITableViewUpdater()
+  private var cancellable = Set<AnyCancellable>()
+  var renderer = Renderer(
+    adapter: FavouriteTableViewAdapter(),
+    updater: UITableViewUpdater()
   )
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    swipeAction()
   }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -42,6 +46,17 @@ class FavouriteViewController: UIViewController {
     tableView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
     }
+    renderSection()
+  }
+  func swipeAction(){
+    renderer.adapter.$indexPath.sink { [weak self]indexPath in
+      if indexPath > -1{
+        self?.removeSwipe(indexPath: indexPath)
+      }
+    }.store(in: &cancellable)
+  }
+  func removeSwipe(indexPath:Int){
+    viewModel.unFavourite(indexPath: indexPath)
     renderSection()
   }
   func makeNoFavouritedSection() -> Section {

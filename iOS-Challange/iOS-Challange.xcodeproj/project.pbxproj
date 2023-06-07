@@ -32,6 +32,7 @@
 		279289952A2B85A200FDBD9D /* GameDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279289942A2B85A200FDBD9D /* GameDetailsView.swift */; };
 		2792899B2A2B934800FDBD9D /* GameDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2792899A2A2B934800FDBD9D /* GameDetails.swift */; };
 		279CDD4F2A27988A00D0358C /* GamesTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279CDD4E2A27988A00D0358C /* GamesTabBar.swift */; };
+		27D188F02A2FE96F0017F83D /* FavouritedTableViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D188EF2A2FE96F0017F83D /* FavouritedTableViewAdapter.swift */; };
 		27F35A5B2A25FBE20008ECE6 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F35A5A2A25FBE20008ECE6 /* Genre.swift */; };
 		27F35A622A263C4A0008ECE6 /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F35A612A263C4A0008ECE6 /* GamesView.swift */; };
 		369FA70B4F90D53FE16704D3 /* Pods_iOS_Challange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EC93043EE9E1DE857A0C91A /* Pods_iOS_Challange.framework */; };
@@ -65,6 +66,7 @@
 		279289942A2B85A200FDBD9D /* GameDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsView.swift; sourceTree = "<group>"; };
 		2792899A2A2B934800FDBD9D /* GameDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetails.swift; sourceTree = "<group>"; };
 		279CDD4E2A27988A00D0358C /* GamesTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTabBar.swift; sourceTree = "<group>"; };
+		27D188EF2A2FE96F0017F83D /* FavouritedTableViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritedTableViewAdapter.swift; sourceTree = "<group>"; };
 		27F35A5A2A25FBE20008ECE6 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		27F35A612A263C4A0008ECE6 /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
 		2FBF42FFE17E877536766AD8 /* Pods-iOS-Challange.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Challange.debug.xcconfig"; path = "Target Support Files/Pods-iOS-Challange/Pods-iOS-Challange.debug.xcconfig"; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				2792898B2A2B7E2D00FDBD9D /* UIColorExtension.swift */,
 				2757F92F2A2CA84C005E300D /* GamesTableViewAdapter.swift */,
 				2790359A2A2F681D00B508BF /* ResultsExtension.swift */,
+				27D188EF2A2FE96F0017F83D /* FavouritedTableViewAdapter.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				27358A782A25069D0023A6ED /* Games.swift in Sources */,
 				27358A6B2A24FE360023A6ED /* ApiService.swift in Sources */,
 				27358A742A2503150023A6ED /* GamesResponse.swift in Sources */,
+				27D188F02A2FE96F0017F83D /* FavouritedTableViewAdapter.swift in Sources */,
 				27358A6D2A25005F0023A6ED /* ApiRequest.swift in Sources */,
 				2792898C2A2B7E2D00FDBD9D /* UIColorExtension.swift in Sources */,
 				279289952A2B85A200FDBD9D /* GameDetailsView.swift in Sources */,

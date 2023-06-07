@@ -35,4 +35,7 @@ class FavouriteViewModel{
   func getFavouritesCount(){
     favouritedCounter = gamesUseCase.favouriteCount()
   }
+  func unFavourite(indexPath:Int){
+    gamesUseCase.unFavourite(game: favouritedGames[indexPath].id)
+  }
 }
