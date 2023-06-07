@@ -38,6 +38,7 @@ class GamesViewController: UIViewController {
   private var noSearch = Section(id: "no search")
   private let tableView = UITableView()
   private let searchController = UISearchController()
+  var isChildViewControllerWillDisAppear: Bool?
   private let renderer = Renderer(
     adapter: GamesTableViewAdapter(),
     updater: UITableViewUpdater()
@@ -48,8 +49,11 @@ class GamesViewController: UIViewController {
   }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.searchController.searchBar.text = ""
+    if !isMovingToParent{
+      setupCarbonTableView()
+    }
   }
+
   func setupUI(){
     title = "Games"
     view.addSubview(tableView)
@@ -196,12 +200,7 @@ extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdati
       clearCarbonView()
     }
   }
-  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-    viewModel.removeData()
-    sectionArray = []
-    sectionArray.append(noSearch)
-    renderer.render(sectionArray)
-  }
+
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     viewModel.removeData()
     clearCarbonView()

@@ -33,7 +33,6 @@ class GameDetailsViewBuilder {
 }
 class GameDetailsViewController: UIViewController {
   var cancellable = Set<AnyCancellable>()
-
   private let tableView = UITableView()
   public var viewModel: GameDetailsViewModel!
   public var gameFavourited = false
