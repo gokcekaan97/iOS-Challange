@@ -22,8 +22,11 @@ final class ApiService {
   }
   public func execute<T: Codable>(_ request: ApiRequest,
                                     expecting type: T.Type) -> AnyPublisher<T,AFError>{
-      let url = request.url
-      return AF.request(url!, method:.get)
+    guard let url = request.url else {
+      let error = AFError.createURLRequestFailed(error: ApiServiceError.urlNil)
+      return Fail(error: error).eraseToAnyPublisher()
+    }
+      return AF.request(url, method:.get)
         .validate()
         .publishDecodable(type: T.self)
         .value()

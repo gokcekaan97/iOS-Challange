@@ -45,7 +45,7 @@ struct GameItem: IdentifiableComponent {
     content.gameImage.kf.setImage(with: image, options: [.processor(downsampling)])
     content.onSelect = onSelect
     if let bool = shownBool, bool{
-      content.backgroundColor = .systemGray
+      content.backgroundColor = UIColor(hexString: "#E0E0E0")
     }else {
       content.backgroundColor = .systemBackground
     }

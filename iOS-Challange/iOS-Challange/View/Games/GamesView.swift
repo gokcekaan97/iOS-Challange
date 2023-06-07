@@ -12,7 +12,11 @@ import SnapKit
 import Kingfisher
 
 class GamesView: UIView {
-  let gameImage = UIImageView()
+  let gameImage: UIImageView = {
+    let image = UIImageView()
+    image.contentMode = .scaleAspectFit
+    return image
+  }()
   let gameTitle: UILabel = {
     let label = UILabel()
     label.font = UIFont.boldSystemFont(ofSize: 20)

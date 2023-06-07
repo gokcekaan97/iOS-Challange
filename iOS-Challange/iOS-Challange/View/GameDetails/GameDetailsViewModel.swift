@@ -14,6 +14,7 @@ class GameDetailsViewModel: ObservableObject{
   var gameDetails: GameDetails?
   var count: Int?
   let gamesUseCase = GamesUseCase()
+  var descriptionLine = 4
   init(gameId:Int){
     getGame(gameId: gameId)
   }

@@ -200,7 +200,9 @@ extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdati
       clearCarbonView()
     }
   }
-
+  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    noSearchRender()
+  }
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     viewModel.removeData()
     clearCarbonView()

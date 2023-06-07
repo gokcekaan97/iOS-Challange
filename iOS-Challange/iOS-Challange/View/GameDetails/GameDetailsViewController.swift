@@ -35,6 +35,7 @@ class GameDetailsViewController: UIViewController {
   var cancellable = Set<AnyCancellable>()
   private let tableView = UITableView()
   public var viewModel: GameDetailsViewModel!
+  var gameDetailSection = Section(id: "")
   public var gameFavourited = false
   private let renderer = Renderer(
       adapter: UITableViewAdapter(),
@@ -70,8 +71,8 @@ class GameDetailsViewController: UIViewController {
         make.edges.equalToSuperview()
     }
     viewModel.shownGame()
-    let gameDetailSection = makeGameSection()
-    render(section: gameDetailSection)
+    gameDetailSection = makeGameSection()
+    render()
     self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "",
                                                                   style: .plain,
                                                                   target: self,
@@ -85,8 +86,17 @@ class GameDetailsViewController: UIViewController {
       }
     }
   }
-  func render(section: Section) {
-    renderer.render(section)
+  func render() {
+    renderer.render(gameDetailSection)
+  }
+  func descriptionRender(){
+    if viewModel.descriptionLine == 4 {
+      viewModel.descriptionLine = 1
+    }else if viewModel.descriptionLine == 1{
+      viewModel.descriptionLine = 4
+    }
+    gameDetailSection = makeGameSection()
+    renderer.render(gameDetailSection)
   }
   func makeGameSection() -> Section {
     var section = Section(id: "Games")
@@ -98,7 +108,11 @@ class GameDetailsViewController: UIViewController {
     let tempImageURL = URL(string: urlString)
     let cell = CellNode(GameDetail(title: gameName,
                                    description: gameDescription,
-                                   image: tempImageURL))
+                                   image: tempImageURL,
+                                   descriptionLine: viewModel.descriptionLine,
+                                   onSelect: {[self] in
+      self.descriptionRender()
+    }))
     let redditCell = CellNode(GameDetailVisit(title: "reddit",onSelect: {
       guard let url = URL(string: redditUrl) else { return }
       UIApplication.shared.open(url)

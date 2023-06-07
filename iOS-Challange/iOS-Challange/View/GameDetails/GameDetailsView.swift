@@ -11,7 +11,11 @@ import SnapKit
 import Carbon
 
 class GameDetailsView: UIView {
-  let gameImage = UIImageView()
+  let gameImage: UIImageView = {
+    let image = UIImageView()
+    image.contentMode = .scaleAspectFill
+    return image
+  }()
   let gameDescriptionTitle: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 17)
@@ -30,10 +34,12 @@ class GameDetailsView: UIView {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 10, weight: .light)
     label.textAlignment = .left
-    label.numberOfLines = 0
+    label.numberOfLines = 4
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
+  var onSelect: (() -> Void)?
+  let tap = UITapGestureRecognizer()
   override init(frame: CGRect) {
     super.init(frame: frame)
     self.setupUI()
@@ -42,9 +48,15 @@ class GameDetailsView: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  @objc func handleSelect() {
+    onSelect?()
+  }
 
   func setupUI() {
     self.translatesAutoresizingMaskIntoConstraints = false
+    tap.addTarget(self, action: #selector(handleSelect))
+    gameDescription.addGestureRecognizer(tap)
+    gameDescription.isUserInteractionEnabled = true
     self.addSubview(gameImage)
     self.addSubview(gameDescription)
     self.addSubview(gameDescriptionTitle)
@@ -75,6 +87,8 @@ struct GameDetail: IdentifiableComponent {
   var title: String
   var description: String
   var image: URL?
+  var descriptionLine: Int
+  var onSelect: () -> Void
   var id: String {
     title
   }
@@ -96,6 +110,8 @@ struct GameDetail: IdentifiableComponent {
     content.gameDescription.text = description
     content.gameDescriptionTitle.text = "Game Description"
     content.gameImage.kf.setImage(with: image)
+    content.gameDescription.numberOfLines = descriptionLine
+    content.onSelect = onSelect
   }
 }
 class GameDetailsVisitView: UIView {
