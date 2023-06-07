@@ -37,6 +37,7 @@ class GamesViewController: UIViewController {
   private var sectionArray: [Section] = []
   private var noSearch = Section(id: "no search")
   private let tableView = UITableView()
+  var searchTimer: Timer?
   private let searchController = UISearchController()
   var isChildViewControllerWillDisAppear: Bool?
   private let renderer = Renderer(
@@ -189,16 +190,23 @@ class GamesViewController: UIViewController {
     sectionArray.append(noSearch)
     renderer.render(sectionArray)
   }
-}
-
-extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate{
-  func updateSearchResults(for searchController: UISearchController) {
+  func performSearch(searchController:UISearchController){
     if let len = searchController.searchBar.text?.count, len > 3{
       if let text = searchController.searchBar.text{
         viewModel.getSpecificGames(name: text)
       }
       clearCarbonView()
     }
+    searchTimer?.invalidate()
+  }
+}
+
+extension GamesViewController: UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate{
+  func updateSearchResults(for searchController: UISearchController) {
+    searchTimer?.invalidate()
+    searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { [weak self] _ in
+      self?.performSearch(searchController: searchController)
+    })
   }
   func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
     noSearchRender()
