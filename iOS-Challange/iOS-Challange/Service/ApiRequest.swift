@@ -12,7 +12,7 @@ final class ApiRequest {
      static let baseUrl = "https://api.rawg.io/api"
   }
   private let endpoint: ApiEndpoint
-  private let apiKey = "?key=3be8af6ebf124ffe81d90f514e59856c"
+  private let apiKey = "?key=6033283957b54c44af951f0d699cde89"
   static let gamesApiRequest = ApiRequest(endpoint: .games)
   private let queryParameters: [URLQueryItem]
   private let gameId:Int?
